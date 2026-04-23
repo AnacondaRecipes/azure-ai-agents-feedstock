@@ -1,0 +1,49 @@
+{% set name = "azure-ai-agents" %}
+{% set version = "1.1.0" %}
+
+package:
+  name: {{ name }}
+  version: {{ version }}
+
+source:
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name.replace('-', '_')}}-{{ version }}.tar.gz
+  sha256: eb9d7226282d03206c3fab3f3ee0a2fc71e0ad38e52d2f4f19a92c56ed951aea
+
+build:
+  number: 0
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  skip: true  # [py<39]
+
+requirements:
+  host:
+    - python
+    - pip
+  run:
+    - python
+    - isodate >=0.6.1
+    - azure-core >=1.30.0
+    - typing-extensions >=4.6.0
+
+# Unable to run tests: No azure-devtools -> https://pypi.org/project/azure-devtools
+test:
+  imports:
+    - azure.ai.agents
+    - azure.ai.agents._utils
+  commands:
+    - pip check
+  requires:
+    - pip
+
+about:
+  home: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk
+  summary: Microsoft Corporation Azure AI Agents Client Library for Python
+  license: MIT
+  license_file: LICENSE
+  license_family: MIT
+  description: Azure AI Agents client library for Python
+  dev_url: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/ai/azure-ai-agents
+  doc_url: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/ai/azure-ai-agents/README.md
+
+extra:
+  recipe-maintainers:
+    - and300u250w
